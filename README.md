@@ -1,7 +1,7 @@
 # CHARGE-GLI
 Conversion tool from GEM output to meta-analysis-ready format for CHARGE GLI projects
 # Description
-This python script is used to convert GEM (v1.4.1 or later) output to the meta-analysis-ready format for Phase2 CHARGE Gene-Lifestyle Interactions projects. This version works for python3. There is a version working for python2 https://github.com/hanchenphd/GEM2CHARGEGLI. 
+This python script is used to convert GEM (v1.4.1 or later) output to the meta-analysis-ready format for Phase2 CHARGE Gene-Lifestyle Interactions projects. This version works for python3. There is a version that works for python2 https://github.com/hanchenphd/GEM2CHARGEGLI. 
 # Usage
 This python script reads GEM Model 1 and Model 2 output files, as well as a SNP info file that includes the imputation flag (Genotyped/Imputed) and quality measure (INFO), and writes the tab-delimited meta-analysis-ready file in gzipped format. Missing values are coded as a period (.), the MAF cut-off is 0.001, and the imputation quality (INFO) cut-off is 0.3.
 
