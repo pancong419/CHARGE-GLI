@@ -2,7 +2,7 @@
 
 ###################################
 ### Copyright (C) 2022 Cong Pan ###
-### version 0.1, March 4, 2022   ###
+### version 0.1, March 4, 2022  ###
 ###################################
 
 # NOTE: this script is used to convert GEM (v1.4.1 or later) output to the meta-analysis-ready format for Phase2 CHARGE Gene-Lifestyle Interactions projects
