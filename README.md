@@ -24,7 +24,7 @@ Input files can be gzipped files (.gz).
 ```snpinfofile_delim```: Delimiter in your ```snpinfofile```. Example: tab, space or , (comma).
 # Example
 ```
-python GEM2CHARGEGLI.py Phase2.ARIC.AA.HDL.LTST.M1.COMBINED.chr22.out Phase2.ARIC.AA.HDL.LTST.M2.COMBINED.chr22.out chr22.info.gz PHASE2.ARIC.AA.HDL.LTST.COMBINED.20220216.txt LTST SNP Rsq Genotyped tab
+python GEM2CHARGEGLI_python3.py Phase2.ARIC.AA.HDL.LTST.M1.COMBINED.chr22.out Phase2.ARIC.AA.HDL.LTST.M2.COMBINED.chr22.out chr22.info.gz PHASE2.ARIC.AA.HDL.LTST.COMBINED.20220216.txt LTST SNP Rsq Genotyped tab
 ```
 # Version
 The current version is v0.1 (March 4, 2022).
