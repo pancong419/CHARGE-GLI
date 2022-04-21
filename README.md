@@ -27,7 +27,7 @@ Input files can be gzipped files (.gz).
 python GEM2CHARGEGLI_python3.py Phase2.ARIC.AA.HDL.LTST.M1.COMBINED.chr22.out Phase2.ARIC.AA.HDL.LTST.M2.COMBINED.chr22.out chr22.info.gz PHASE2.ARIC.AA.HDL.LTST.COMBINED.20220216.txt LTST SNP Rsq Genotyped tab
 ```
 # Version
-The current version is v0.1 (March 4, 2022).
+The current version is v0.2 (April 21, 2022).
 # License
 GPL-3.
 # Contact
