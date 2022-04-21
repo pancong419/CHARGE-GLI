@@ -2,7 +2,7 @@
 
 ###################################
 ### Copyright (C) 2022 Cong Pan ###
-### version 0.1, March 4, 2022   ###
+### version 0.2, April 21, 2022   ###
 ###################################
 
 # NOTE: this script is used to convert GEM (v1.4.1 or later) output to the meta-analysis-ready format for Phase2 CHARGE Gene-Lifestyle Interactions projects
@@ -12,6 +12,7 @@
 # Example command:
 # python GEM2CHARGEGLI.py Phase2.ARIC.AA.HDL.LTST.M1.COMBINED.chr22.out Phase2.ARIC.AA.HDL.LTST.M2.COMBINED.chr22.out chr22.info.gz PHASE2.ARIC.AA.HDL.LTST.COMBINED.20220216.txt LTST SNP Rsq Genotyped tab
 # For questions or comments, please contact Cong.Pan.2 AT uth.tmc.edu
+# v0.2: added formatting quantitative exposure 
 
 
 import sys
