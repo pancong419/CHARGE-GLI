@@ -32,6 +32,8 @@ The current version is v0.2 (April 21, 2022).
 GPL-3.
 # Contact
 Please contact Cong Pan (Cong.Pan AT uth.tmc.edu) if you have any questions.
+# Acknowledgments
+This work was supported by NIH grants R01 HL145025 and R01 HL156991.
 # References
 If you use GEM in your analysis, please cite
 * Westerman KE, Pham DT, Hong L, Chen Y, Sevilla-González M, Sung YJ, Sun YV, Morrison AC, Chen H, Manning AK. (2021) GEM: scalable and flexible gene-environment interaction analysis in millions of samples. Bioinformatics 37(20):3514-3520. PubMed PMID: 34695175. PMCID: PMC8545347. DOI: 10.1093/bioinformatics/btab223.
