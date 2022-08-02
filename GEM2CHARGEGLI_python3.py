@@ -120,7 +120,6 @@ if not "chr22" in infile1 and not "chr22" in infile2 and not "chr22" in snpinfof
     columns2 = {}
     for i in range(len(fields2)):
         columns2[fields2[i]] = i
-    #outfile_handle.write(b"SNPID\tCHR\tPOS\tINFO\tIMPUTED\tEFFECT_ALLELE\tNON_EFFECT_ALLELE\tEAF_ALL\tEAF_E0\tEAF_E1\tN\tN_EXP\tBETA_SNP_M2\tSE_SNP_M2\tP_SNP_M2\tBETA_SNP_M1\tSE_SNP_M1_MB\tP_SNP_M1_MB\tSE_SNP_M1_ROBUST\tP_SNP_M1_ROBUST\tBETA_INT\tSE_INT_MB\tP_INT_MB\tSE_INT_ROBUST\tP_INT_ROBUST\tP_JOINT_MB\tCOV_SNP_INT_MB\tP_JOINT_ROBUST\tCOV_SNP_INT_ROBUST\n")
     if quantE:
         outfile_handle.write(b"SNPID\tCHR\tPOS\tINFO\tIMPUTED\tEFFECT_ALLELE\tNON_EFFECT_ALLELE\tEAF_ALL\tN\tBETA_SNP_M2\tSE_SNP_M2\tP_SNP_M2\tBETA_SNP_M1\tSE_SNP_M1_MB\tP_SNP_M1_MB\tSE_SNP_M1_ROBUST\tP_SNP_M1_ROBUST\tBETA_INT\tSE_INT_MB\tP_INT_MB\tSE_INT_ROBUST\tP_INT_ROBUST\tP_JOINT_MB\tCOV_SNP_INT_MB\tP_JOINT_ROBUST\tCOV_SNP_INT_ROBUST\n")
     else:
@@ -183,18 +182,15 @@ if not "chr22" in infile1 and not "chr22" in infile2 and not "chr22" in snpinfof
             continue
         if fields1[columns1["AF"]] == na_string or float(fields1[columns1["AF"]]) < maf_cutoff or float(fields1[columns1["AF"]]) > 1 - maf_cutoff:
             continue
-
-        if fields1[columns1["Beta_G"]] == na_string:
+        if fields1[columns1["Beta_G"]] == na_string or fields1[columns1["SE_Beta_G"]] == na_string or float(fields1[columns1["SE_Beta_G"]]) <= 0:
             p_snp_m1_mb = na_string
-            p_snp_m1_robust = na_string
-        elif fields1[columns1["SE_Beta_G"]] == na_string or float(fields1[columns1["SE_Beta_G"]]) <= 0:
-            p_snp_m1_mb = na_string
-        elif fields1[columns1["robust_SE_Beta_G"]] == na_string or float(fields1[columns1["robust_SE_Beta_G"]]) <= 0:
-            p_snp_m1_robust = na_string
         else:
             p_snp_m1_mb = "{:.6}".format(stats.chi2.sf((float(fields1[columns1["Beta_G"]])/float(fields1[columns1["SE_Beta_G"]]))**2, 1))
+            
+        if fields1[columns1["Beta_G"]] == na_string or fields1[columns1["robust_SE_Beta_G"]] == na_string or float(fields1[columns1["robust_SE_Beta_G"]]) <= 0:    
+            p_snp_m1_robust = na_string
+        else:
             p_snp_m1_robust = "{:.6}".format(stats.chi2.sf((float(fields1[columns1["Beta_G"]])/float(fields1[columns1["robust_SE_Beta_G"]]))**2, 1))
-        #outfile_handle.write(str.encode(fields1[columns1["SNPID"]]) + b"\t" + str.encode(fields1[columns1["CHR"]]) + b"\t" + str.encode(fields1[columns1["POS"]]) + b"\t" + str.encode(info[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(imputed[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(fields1[columns1["Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["Non_Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["AF"]]) + b"\t" + str.encode(fields1[columns1["AF_" + Ename + "_0"]]) + b"\t" + str.encode(fields1[columns1["AF_" + Ename + "_1"]]) + b"\t" + str.encode(fields1[columns1["N_Samples"]]) + b"\t" + str.encode(fields1[columns1["N_" + Ename + "_1"]]) + b"\t" + str.encode(fields2[columns2["Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["SE_Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["P_Value_Marginal"]]) + b"\t" + str.encode(fields1[columns1["Beta_G"]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_mb) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_robust) + b"\t" + str.encode(fields1[columns1["Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["Cov_Beta_G_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["robust_Cov_Beta_G_G-" + Ename]]) + b"\n")
         if quantE:
             outfile_handle.write(str.encode(fields1[columns1["SNPID"]]) + b"\t" + str.encode(fields1[columns1["CHR"]]) + b"\t" + str.encode(fields1[columns1["POS"]]) + b"\t" + str.encode(info[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(imputed[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(fields1[columns1["Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["Non_Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["AF"]]) + b"\t"  + str.encode(fields1[columns1["N_Samples"]]) + b"\t"  + str.encode(fields2[columns2["Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["SE_Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["P_Value_Marginal"]]) + b"\t" + str.encode(fields1[columns1["Beta_G"]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_mb) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_robust) + b"\t" + str.encode(fields1[columns1["Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["Cov_Beta_G_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["robust_Cov_Beta_G_G-" + Ename]]) + b"\n")
         else:
@@ -211,8 +207,6 @@ elif "chr22" in infile1 and "chr22" in infile2 and "chr22" in snpinfofile:
         print ("Reading SNP info file: %s" % current_snpinfofile)    
         if current_snpinfofile.endswith(".gz"):
             snpinfofile_handle = gzip.open(current_snpinfofile, "rt", encoding='utf-8')
-            #if type(snpinfofile_delim) != type(b" "):
-            #    snpinfofile_delim = str.encode(snpinfofile_delim)
         else:
             snpinfofile_handle = open(current_snpinfofile, "r")
         line = snpinfofile_handle.readline()
@@ -267,7 +261,6 @@ elif "chr22" in infile1 and "chr22" in infile2 and "chr22" in snpinfofile:
         for i in range(len(fields2)):
             columns2[fields2[i]] = i
         if chr == 1:
-            #outfile_handle.write(b"SNPID\tCHR\tPOS\tINFO\tIMPUTED\tEFFECT_ALLELE\tNON_EFFECT_ALLELE\tEAF_ALL\tEAF_E0\tEAF_E1\tN\tN_EXP\tBETA_SNP_M2\tSE_SNP_M2\tP_SNP_M2\tBETA_SNP_M1\tSE_SNP_M1_MB\tP_SNP_M1_MB\tSE_SNP_M1_ROBUST\tP_SNP_M1_ROBUST\tBETA_INT\tSE_INT_MB\tP_INT_MB\tSE_INT_ROBUST\tP_INT_ROBUST\tP_JOINT_MB\tCOV_SNP_INT_MB\tP_JOINT_ROBUST\tCOV_SNP_INT_ROBUST\n")
             if not "AF_" + Ename + "_0" in columns1 or not "AF_" + Ename + "_1" in columns1 or not "N_" + Ename + "_1" in columns1:
                 quantE = True
             else:
@@ -335,17 +328,14 @@ elif "chr22" in infile1 and "chr22" in infile2 and "chr22" in snpinfofile:
                 continue
             if fields1[columns1["AF"]] == na_string or float(fields1[columns1["AF"]]) < maf_cutoff or float(fields1[columns1["AF"]]) > 1 - maf_cutoff:
                 continue
-            if fields1[columns1["Beta_G"]] == na_string:
+            if fields1[columns1["Beta_G"]] == na_string or fields1[columns1["SE_Beta_G"]] == na_string or float(fields1[columns1["SE_Beta_G"]]) <= 0:
                 p_snp_m1_mb = na_string
-                p_snp_m1_robust = na_string
-            elif fields1[columns1["SE_Beta_G"]] == na_string or float(fields1[columns1["SE_Beta_G"]]) <= 0:
-                p_snp_m1_mb = na_string
-            elif fields1[columns1["robust_SE_Beta_G"]] == na_string or float(fields1[columns1["robust_SE_Beta_G"]]) <= 0:
+            else:
+                p_snp_m1_mb = "{:.6}".format(stats.chi2.sf((float(fields1[columns1["Beta_G"]])/float(fields1[columns1["SE_Beta_G"]]))**2, 1))            
+            if fields1[columns1["Beta_G"]] == na_string or fields1[columns1["robust_SE_Beta_G"]] == na_string or float(fields1[columns1["robust_SE_Beta_G"]]) <= 0:    
                 p_snp_m1_robust = na_string
             else:
-                p_snp_m1_mb = "{:.6}".format(stats.chi2.sf((float(fields1[columns1["Beta_G"]])/float(fields1[columns1["SE_Beta_G"]]))**2, 1))
                 p_snp_m1_robust = "{:.6}".format(stats.chi2.sf((float(fields1[columns1["Beta_G"]])/float(fields1[columns1["robust_SE_Beta_G"]]))**2, 1))
-            #outfile_handle.write(str.encode(fields1[columns1["SNPID"]]) + b"\t" + str.encode(fields1[columns1["CHR"]]) + b"\t" + str.encode(fields1[columns1["POS"]]) + b"\t" + str.encode(info[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(imputed[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(fields1[columns1["Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["Non_Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["AF"]]) + b"\t" + str.encode(fields1[columns1["AF_" + Ename + "_0"]]) + b"\t" + str.encode(fields1[columns1["AF_" + Ename + "_1"]]) + b"\t" + str.encode(fields1[columns1["N_Samples"]]) + b"\t" + str.encode(fields1[columns1["N_" + Ename + "_1"]]) + b"\t" + str.encode(fields2[columns2["Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["SE_Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["P_Value_Marginal"]]) + b"\t" + str.encode(fields1[columns1["Beta_G"]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_mb) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_robust) + b"\t" + str.encode(fields1[columns1["Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["Cov_Beta_G_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["robust_Cov_Beta_G_G-" + Ename]]) + b"\n")
             if quantE:
                 outfile_handle.write(str.encode(fields1[columns1["SNPID"]]) + b"\t" + str.encode(fields1[columns1["CHR"]]) + b"\t" + str.encode(fields1[columns1["POS"]]) + b"\t" + str.encode(info[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(imputed[fields1[columns1["SNPID"]]]) + b"\t" + str.encode(fields1[columns1["Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["Non_Effect_Allele"]]) + b"\t" + str.encode(fields1[columns1["AF"]]) + b"\t"  + str.encode(fields1[columns1["N_Samples"]]) + b"\t"  + str.encode(fields2[columns2["Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["SE_Beta_Marginal"]]) + b"\t" + str.encode(fields2[columns2["P_Value_Marginal"]]) + b"\t" + str.encode(fields1[columns1["Beta_G"]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_mb) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G"]]) + b"\t" + str.encode(p_snp_m1_robust) + b"\t" + str.encode(fields1[columns1["Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["robust_SE_Beta_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Interaction"]]) + b"\t" + str.encode(fields1[columns1["P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["Cov_Beta_G_G-" + Ename]]) + b"\t" + str.encode(fields1[columns1["robust_P_Value_Joint"]]) + b"\t" + str.encode(fields1[columns1["robust_Cov_Beta_G_G-" + Ename]]) + b"\n")
             else:
